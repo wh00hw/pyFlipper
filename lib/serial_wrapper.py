@@ -13,3 +13,6 @@ class SerialWrapper:
         time.sleep(0.5)
         self.serial_port.readline()
         return self.serial_port.read_until(b'>').decode().rstrip('>\r\n')
+    
+    def ctrl_c(self):
+        self.serial_port.write(b'\x03')

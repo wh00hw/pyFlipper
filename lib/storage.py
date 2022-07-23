@@ -18,7 +18,7 @@ class Storage:
         size = size_p.findall(response)
         return { info[0][0]: info[0][1].rstrip(), info[1][0]: info[1][1].rstrip(), size[0][1]+"_KB": int(size[0][0]), size[1][1]+"_KB": int(size[1][0])}
     
-    def format(self, path):
+    def format(self):
         pass
 
     def _explorer(self, cmd, path):
@@ -36,8 +36,8 @@ class Storage:
     def tree(self, path):
         return self._explorer("tree", path)
     
-    def remove(self):
-        pass
+    def remove(self, file):
+        return self._serial_wrapper.send(f"storage remove {file}")
 
     def read(self, file):
         return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
