@@ -1,13 +1,17 @@
-import re
-from lib.Bt import Bt
-from lib.DeviceInfo import DeviceInfo
-from lib.Free import Free
-from lib.Led import Led
-from lib.Ps import Ps
-from lib.SerialWrapper import SerialWrapper
-from lib.Storage import Storage
-from lib.Vibro import Vibro
-from lib.Date import Date
+from lib.bt import Bt
+from lib.device_info import DeviceInfo
+from lib.free import Free
+from lib.led import Led
+from lib.music_player import MusicPlayer
+from lib.ps import Ps
+from lib.serial_wrapper import SerialWrapper
+from lib.storage import Storage
+from lib.vibro import Vibro
+from lib.date import Date
+from lib.gpio import Gpio
+from lib.loader import Loader
+from lib.power import Power
+from lib.update import Update
 
 class PyFlipper:
 
@@ -21,3 +25,8 @@ class PyFlipper:
         self.ps = Ps(serial_wrapper=self._serial_wrapper)
         self.free = Free(serial_wrapper=self._serial_wrapper)
         self.storage = Storage(serial_wrapper=self._serial_wrapper)
+        self.gpio = Gpio(serial_wrapper=self._serial_wrapper)
+        self.loader = Loader(serial_wrapper=self._serial_wrapper)
+        self.music_player = MusicPlayer(serial_wrapper=self._serial_wrapper)
+        self.power = Power(serial_wrapper=self._serial_wrapper)
+        self.update = Update(serial_wrapper=self._serial_wrapper)

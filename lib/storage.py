@@ -39,3 +39,30 @@ class Storage:
     def remove(self):
         pass
 
+    def read(self, file):
+        return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
+    
+    def read_chunk(self, file, chunks):
+        return self._serial_wrapper.send(f"storage read_chunks {file} {chunks}").split('\r\n')[1]
+    
+    def copy(self, source, destination):
+        return self._serial_wrapper.send(f"storage copy {source} {destination}")
+    
+    def rename(self, file, new_path):
+        return self._serial_wrapper.send(f"storage rename {file} {new_path}")
+    
+    def mkdir(self, new_dir):
+        return self._serial_wrapper.send(f"storage mkdir {new_dir}")
+    
+    def md5(self, file):
+        return self._serial_wrapper.send(f"storage md5 {file}")
+    
+    def stat(self, file):
+        return self._serial_wrapper.send(f"storage stat {file}")
+
+    def write(self):
+        pass
+
+    def write_chunks(self):
+        pass
+
