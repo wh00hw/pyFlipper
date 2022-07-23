@@ -4,7 +4,7 @@ class Ps:
     def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
 
-    def ps(self):
+    def list(self):
         pattern = re.compile(
             '(\w+)\s+(0[xX][0-9a-fA-F]+)\s+(\S+)\s+(\d+)\s+(\d+)')
         return [

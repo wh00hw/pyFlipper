@@ -28,25 +28,25 @@ date = flipper.date.date()
 timestamp = flipper.date.timestamp()
 
 #Get the processes dict list
-ps = flipper.ps.ps()
+ps = flipper.ps.list()
 
 #Get device info dict
-device_info = flipper.device_info.device_info()
+device_info = flipper.device_info.info()
 
-#Get memory info dict
-memory = flipper.free.free()
+#Get heap info dict
+heap = flipper.free.info()
 
 #Get bluetooth info
-bt_info = flipper.bt.hci_info()
+bt_info = flipper.bt.info()
 
 #Get the storage /ext info
 ext_info = flipper.storage.info('/ext')
 
 #Get the storage /ext list
-ext_list = flipper.storage.info('/ext')
+ext_list = flipper.storage.list('/ext')
 
 #Get the storage /ext tree
-ext_tree = flipper.storage.info('/ext')
+ext_tree = flipper.storage.tree('/ext')
 
 #Set red led on
 flipper.led.set('r', 255)
