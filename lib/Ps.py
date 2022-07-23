@@ -1,8 +1,6 @@
 import re
 
-
 class Ps:
-
     def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
 
