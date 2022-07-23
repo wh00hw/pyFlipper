@@ -1,7 +1,6 @@
-
 # PyFlipper
 
-Unoffical Flipper Zero cli wrapper written in python
+Unoffical Flipper Zero cli wrapper written in Python
 
 ## Installation
 
@@ -10,7 +9,7 @@ Install PyFlipper with pip
 ```bash
 $ python3 -m venv venv
 $ source venv/bin/activate
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 ## Usage/Examples
 
@@ -23,40 +22,43 @@ from pyflipper import PyFlipper
 flipper = PyFlipper("/dev/ttyACM0")
 
 #Get flipper date
-processes = flipper.date.date()
+date = flipper.date.date()
 
 #Get flipper timestamp
-processes = flipper.date.timestamp()
+timestamp = flipper.date.timestamp()
 
 #Get the processes dict list
-processes = flipper.ps.ps()
+ps = flipper.ps.ps()
 
 #Get device info dict
-processes = flipper.device_info.device_info()
+device_info = flipper.device_info.device_info()
 
 #Get memory info dict
-processes = flipper.free.free()
+memory = flipper.free.free()
 
 #Get bluetooth info
-processes = flipper.bt.hci_info()
+bt_info = flipper.bt.hci_info()
 
 #Get the storage /ext info
-processes = flipper.storage.info('/ext')
+ext_info = flipper.storage.info('/ext')
 
 #Get the storage /ext list
-processes = flipper.storage.info('/ext')
+ext_list = flipper.storage.info('/ext')
 
 #Get the storage /ext tree
-processes = flipper.storage.info('/ext')
+ext_tree = flipper.storage.info('/ext')
 
 #Set red led on
-processes = flipper.led.set('r', 255)
+flipper.led.set('r', 255)
+
+#Set vibro True or False
+flipper.vibro.set(True)
 
 #Set vibro on
-processes = flipper.vibro.on()
+flipper.vibro.on()
 
 #Set vibro off
-processes = flipper.vibro.off()
+flipper.vibro.off()
 ```
 
 ## Optimizations
@@ -74,6 +76,7 @@ Feel free to contribute in any way
 
 
 ## Buy me a pint
+
 **ZEC:** zs13zdde4mu5rj5yjm2kt6al5yxz2qjjjgxau9zaxs6np9ldxj65cepfyw55qvfp9v8cvd725f7tz7
 
 **ETH:** 0xef3cF1Eb85382EdEEE10A2df2b348866a35C6A54
