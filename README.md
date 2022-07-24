@@ -98,16 +98,16 @@ ext_tree = flipper.storage.tree('/ext')
 file_info = flipper.storage.stat("/ext/foo/bar.txt")
 
 #Make directory
-file_info = flipper.storage.mkdir("/ext/foo")
+flipper.storage.mkdir("/ext/foo")
 ```
 #### Files
 
 ```python
 #Read file
-file_info = flipper.storage.read("/ext/foo/bar.txt")
+file= flipper.storage.read("/ext/foo/bar.txt")
 
 #Read file chunks
-file_info = flipper.storage.read("/ext/foo/bar.txt", 42)
+file = flipper.storage.read("/ext/foo/bar.txt", 42)
 
 #Remove file 
 flipper.storage.remove("/ext/foo/bar.txt")
@@ -215,10 +215,20 @@ flipper.gpio.mode(PIN_NAME, 1)
 #Play song in RTTTL format
 rttl_song = "Littleroot Town - Pokemon:d=4,o=5,b=100:8c5,8f5,8g5,4a5,8p,8g5,8a5,8g5,8a5,8a#5,8p,4c6,8d6,8a5,8g5,8a5,8c#6,4d6,4e6,4d6,8a5,8g5,8f5,8e5,8f5,8a5,4d6,8d5,8e5,2f5,8c6,8a#5,8a#5,8a5,2f5,8d6,8a5,8a5,8g5,2f5,8p,8f5,8d5,8f5,8e5,4e5,8f5,8g5"
 
+#Play in loop
 flipper.music_player.play(song)
+
+#Stop loop
+flipper.music_player.stop()
+
+#Play for 20 seconds
+flipper.music_player.play(song, duration=20)
 
 #Beep
 flipper.music_player.beep()
+
+#Beep for 5 seconds
+flipper.music_player.beep(duration=5)
 ```
 ### NFC
 

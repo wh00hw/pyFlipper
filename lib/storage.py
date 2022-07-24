@@ -63,11 +63,17 @@ class Storage:
         return self._serial_wrapper.send(f"storage remove {file}")
 
     def read(self, file):
-        return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
+        try:
+            return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
+        except IndexError:
+            return ""
 
     def read_chunk(self, file, chunks):
-        return self._serial_wrapper.send(f"storage read_chunks {file} {chunks}").split('\r\n')[1]
-
+        try:
+            return self._serial_wrapper.send(f"storage read_chunks {file} {chunks}").split('\r\n')[1]
+        except IndexError:
+            return ""
+            
     def copy(self, source, destination):
         return self._serial_wrapper.send(f"storage copy {source} {destination}")
 

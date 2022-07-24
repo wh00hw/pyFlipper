@@ -9,12 +9,11 @@ class Threaded:
     def exec(self, func, callback, timeout):
         def _run():
             data = func()
-            if data:
+            if data and callback:
                 callback(func())
         def _timer():
-            if self.thread.is_alive():
-                time.sleep(timeout)
-                self.stop()
+            time.sleep(timeout)
+            self.stop()
         if not self.thread:
             self.thread = Thread(target=_run)
             self.thread.start()
