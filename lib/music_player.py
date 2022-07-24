@@ -1,23 +1,14 @@
-from threading import Thread
-import time
+from .threaded import Threaded
 
-class MusicPlayer:
+class MusicPlayer(Threaded):
     def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
-        self.thread = None
+        super().__init__()
 
     def play(self, rtttl_code, timeout=10):
         def _run():
             self._serial_wrapper.send(f"music_player {rtttl_code}")
-        def _timer(timeout):
-            if self.thread.is_alive():
-                time.sleep(timeout)
-                self.stop()
-        self.thread = Thread(target=_run)
-        self.thread.start()
-        if timeout:
-            Thread(target=_timer, args=(timeout,)).start()
-
-    def stop(self):
-        if self.thread.is_alive():
-            self._serial_wrapper.ctrl_c()
+        self.exec(func=_run, callback=None, timeout=timeout)
+    
+    def beep(self, duration=0.2):
+        self.play("Beep:d=8,o=5,b=80:2b5", timeout=duration)
