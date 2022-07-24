@@ -1,16 +1,39 @@
 import re
+import threading
+import time
 
 class Storage:
+    class Write:
+        def __init__(self, serial_wrapper) -> None:
+            self._serial_wrapper = serial_wrapper
+            self.thread = None
+
+        def start(self, file):
+            self.thread = threading.Thread(target=self._serial_wrapper.send, args=(f"storage write {file}",))
+            self.thread.start()
+
+        def send(self, text):
+            if self.thread.is_alive():
+                #replace carriage return with ctrl+Enter
+                self._serial_wrapper._serial_port.write(text.replace('\r\n', '\x0d').encode())
+                time.sleep(0.5)
+
+        def stop(self):
+            if self.thread.is_alive():
+                self._serial_wrapper.ctrl_c()
+        
+        def write_chunk(self, text, path):
+            text = text.replace('\r\n', '\x0d').encode()
+            threading.Thread(target=self._serial_wrapper.send, args=(f"storage write_chunk {path} {len(text)}",)).start()
+            self._serial_wrapper._serial_port.write(text)
+
     def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
-    
-    def error_handler(self, response):
-        pattern = re.compile("Storage error:\s.*")
-        error_msg = pattern.match(response)
-        if error_msg:
-            raise Exception(error_msg)
+        self.write = __class__.Write(serial_wrapper=serial_wrapper)
 
     def info(self, path):
+        if path not in ['/ext', '/int']:
+            raise Exception("Storage path must be '/ext' or '/int'")
         info_p = re.compile("(\w+):\s(.+)")
         response = self._serial_wrapper.send(f"storage info {path}")
         info = info_p.findall(response)
@@ -32,37 +55,32 @@ class Storage:
 
     def list(self, path):
         return self._explorer("list", path)
-    
+
     def tree(self, path):
         return self._explorer("tree", path)
-    
+
     def remove(self, file):
         return self._serial_wrapper.send(f"storage remove {file}")
 
     def read(self, file):
-        return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
-    
+        return self._serial_wrapper.send(f"storage read {file}")#.split('\r\n')[1]
+
     def read_chunk(self, file, chunks):
         return self._serial_wrapper.send(f"storage read_chunks {file} {chunks}").split('\r\n')[1]
-    
+
     def copy(self, source, destination):
         return self._serial_wrapper.send(f"storage copy {source} {destination}")
-    
+
     def rename(self, file, new_path):
         return self._serial_wrapper.send(f"storage rename {file} {new_path}")
-    
+
     def mkdir(self, new_dir):
         return self._serial_wrapper.send(f"storage mkdir {new_dir}")
     
     def md5(self, file):
         return self._serial_wrapper.send(f"storage md5 {file}")
-    
+
     def stat(self, file):
         return self._serial_wrapper.send(f"storage stat {file}")
 
-    def write(self):
-        pass
-
-    def write_chunks(self):
-        pass
 
