@@ -196,6 +196,19 @@ flipper.vibro.on()
 #Set vibro off
 flipper.vibro.off()
 ```
+### GPIO
+
+```python
+#Set gpio mode: 0 - input, 1 - output
+flipper.gpio.mode(PIN_NAME, 1)
+
+#Read gpio pin value
+flipper.gpio.read(PIN_NAME)
+
+#Set gpio pin value
+flipper.gpio.mode(PIN_NAME, 1)
+```
+
 ### MusicPlayer
 
 ```python
