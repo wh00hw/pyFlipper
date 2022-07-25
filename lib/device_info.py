@@ -1,6 +1,6 @@
 import re
 
-from lib.serial_wrapper import SerialWrapper
+from .serial_wrapper import SerialWrapper
 
 class DeviceInfo:
     def __init__(self, serial_wrapper: SerialWrapper) -> None:
