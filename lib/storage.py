@@ -38,8 +38,7 @@ class Storage:
         self.write = __class__.Write(serial_wrapper=serial_wrapper)
 
     def info(self, path: str) -> dict:
-        if path not in ['/ext', '/int']:
-            raise Exception("Storage path must be '/ext' or '/int'")
+        assert path in ('/ext', '/int'), "Storage path must be '/ext' or '/int'"
         info_p = re.compile("(\w+):\s(.+)")
         response = self._serial_wrapper.send(f"storage info {path}")
         info = info_p.findall(response)
