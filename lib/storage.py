@@ -2,36 +2,42 @@ import re
 import threading
 import time
 
+from .serial_wrapper import SerialWrapper
+
+
+# TODO: Leverage pathlib to validate and manage file paths
+
+
 class Storage:
     class Write:
-        def __init__(self, serial_wrapper) -> None:
+        def __init__(self, serial_wrapper: SerialWrapper) -> None:
             self._serial_wrapper = serial_wrapper
             self.thread = None
 
-        def start(self, file):
+        def start(self, file: str):
             self.thread = threading.Thread(target=self._serial_wrapper.send, args=(f"storage write {file}",))
             self.thread.start()
 
-        def send(self, text):
+        def send(self, text: str):
             if self.thread.is_alive():
                 #replace carriage return with ctrl+Enter
                 self._serial_wrapper._serial_port.write(text.replace('\r\n', '\x0d').encode())
                 time.sleep(0.5)
 
-        def stop(self):
+        def stop(self) -> None:
             if self.thread.is_alive():
                 self._serial_wrapper.ctrl_c()
         
-        def write_chunk(self, text, path):
+        def write_chunk(self, text: str, path: str):
             text = text.replace('\r\n', '\x0d').encode()
             threading.Thread(target=self._serial_wrapper.send, args=(f"storage write_chunk {path} {len(text)}",)).start()
             self._serial_wrapper._serial_port.write(text)
 
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
         self.write = __class__.Write(serial_wrapper=serial_wrapper)
 
-    def info(self, path):
+    def info(self, path: str) -> dict:
         if path not in ['/ext', '/int']:
             raise Exception("Storage path must be '/ext' or '/int'")
         info_p = re.compile("(\w+):\s(.+)")
@@ -42,9 +48,10 @@ class Storage:
         return { info[0][0]: info[0][1].rstrip(), info[1][0]: info[1][1].rstrip(), size[0][1]+"_KB": int(size[0][0]), size[1][1]+"_KB": int(size[1][0])}
     
     def format(self):
+        # TODO: implement
         pass
 
-    def _explorer(self, cmd, path):
+    def _explorer(self, cmd: str, path: str) -> dict:
         dirs_p = re.compile("\[D\]\s(\w+)")
         files_p = re.compile("\[F\]\s(.+)\s(\d+)(\w+)")
         response = self._serial_wrapper.send(f"storage {cmd} {path}")
@@ -53,40 +60,40 @@ class Storage:
         files = [{'name': file[0], 'size': int(file[1]), 'weight': file[2]} for file in files_p.findall(response)]
         return {'dirs': dirs, 'files': files}
 
-    def list(self, path):
+    def list(self, path: str) -> dict:
         return self._explorer("list", path)
 
-    def tree(self, path):
+    def tree(self, path: str) -> dict:
         return self._explorer("tree", path)
 
-    def remove(self, file):
+    def remove(self, file: str) -> str:
         return self._serial_wrapper.send(f"storage remove {file}")
 
-    def read(self, file):
+    def read(self, file: str) -> str:
         try:
             return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
         except IndexError:
             return ""
 
-    def read_chunk(self, file, chunks):
+    def read_chunk(self, file: str, chunks: int) -> str:
         try:
             return self._serial_wrapper.send(f"storage read_chunks {file} {chunks}").split('\r\n')[1]
         except IndexError:
             return ""
             
-    def copy(self, source, destination):
+    def copy(self, source: str, destination: str) -> str:
         return self._serial_wrapper.send(f"storage copy {source} {destination}")
 
-    def rename(self, file, new_path):
+    def rename(self, file: str, new_path: str) -> str:
         return self._serial_wrapper.send(f"storage rename {file} {new_path}")
 
-    def mkdir(self, new_dir):
+    def mkdir(self, new_dir: str) -> str:
         return self._serial_wrapper.send(f"storage mkdir {new_dir}")
     
-    def md5(self, file):
+    def md5(self, file: str) -> str:
         return self._serial_wrapper.send(f"storage md5 {file}")
 
-    def stat(self, file):
+    def stat(self, file: str) -> str:
         return self._serial_wrapper.send(f"storage stat {file}")
 
 

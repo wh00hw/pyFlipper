@@ -1,12 +1,14 @@
 from datetime import datetime
+from lib.serial_wrapper import SerialWrapper
 
 class Date:
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
 
-    def date(self):
-        return datetime.strptime(self._serial_wrapper.send("date"), "%Y-%m-%d %H:%M:%S %w")
+    def date(self) -> datetime:
+        result = self._serial_wrapper.send("date")[:-2].rstrip()
+        return datetime.strptime(result, "%Y-%m-%d %H:%M:%S %w")
 
-    def timestamp(self):
+    def timestamp(self) -> datetime:
         return self.date().timestamp()
     

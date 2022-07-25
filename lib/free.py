@@ -1,9 +1,11 @@
 import re
 
+from .serial_wrapper import SerialWrapper
+
 class Free:
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
 
-    def info(self):
+    def info(self) -> dict:
         pattern = re.compile("([\w|\s]+):\s(\d+)")
-        return { result[0].strip(): int(result[1]) for result in pattern.findall(self._serial_wrapper.send("free")) }
+        return {result[0].strip(): int(result[1]) for result in pattern.findall(self._serial_wrapper.send("free"))}

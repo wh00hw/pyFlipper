@@ -6,11 +6,11 @@ class Threaded:
     def __init__(self) -> None:
         self.thread = None
 
-    def exec(self, func, callback, timeout):
+    def exec(self, func, callback, timeout: int):
         def _run():
             data = func()
             if data and callback:
-                callback(func())
+                callback(data)
         def _timer():
             time.sleep(timeout)
             self.stop()

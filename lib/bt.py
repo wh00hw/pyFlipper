@@ -1,9 +1,11 @@
 import re
 
+from .serial_wrapper import SerialWrapper
+
 class Bt:
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
 
-    def info(self):
+    def info(self) -> dict:
         pattern = re.compile("(\w+):\s([\w|\d]+)")
         return {record[0]: int(record[1]) for record in pattern.findall(self._serial_wrapper.send("bt hci_info"))}
