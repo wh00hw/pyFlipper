@@ -1,12 +1,13 @@
-from .threaded import Threaded
 import re
+from .threaded import Threaded
+from .serial_wrapper import SerialWrapper
 
 class NFC(Threaded):
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
         super().__init__()
 
-    def detect(self, callback, timeout=None):
+    def detect(self, callback, timeout: int = None):
         def _run():
             p = re.compile(
                 "found:\s([A-Z|\-]+)\sUID\slength:\s(\d+),\sUID:([\w|\d]+)")
@@ -17,17 +18,16 @@ class NFC(Threaded):
                 return None
         self.exec(func=_run, callback=callback, timeout=timeout)
 
-    def emulate(self, callback, timeout=None):
-        def _run():
+    def emulate(self, callback, timeout: int = None):
+        def _run() -> str:
             data = self._serial_wrapper.send("nfc detect")
             #TODO parse data
             return data
         self.exec(func=_run, callback=callback, timeout=timeout)
 
-    def field(self, callback, timeout=10):
-        def _run():
+    def field(self, callback, timeout: int = 10):
+        def _run() -> str:
             data = self._serial_wrapper.send("nfc field")
             #TODO parse data
             return data
         self.exec(func=_run, callback=callback, timeout=timeout)
-

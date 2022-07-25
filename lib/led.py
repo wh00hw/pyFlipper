@@ -1,4 +1,4 @@
-from lib.serial_wrapper import SerialWrapper
+from .serial_wrapper import SerialWrapper
 
 class Led:
     def __init__(self, serial_wrapper: SerialWrapper) -> None:

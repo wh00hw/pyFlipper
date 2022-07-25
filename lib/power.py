@@ -1,20 +1,23 @@
 from curses.ascii import isdigit
 import re
 
+from .serial_wrapper import SerialWrapper
+
 class Power:
-    def __init__(self, serial_wrapper) -> None:
+    def __init__(self, serial_wrapper: SerialWrapper) -> None:
         self._serial_wrapper = serial_wrapper
     
-    def off(self):
+    def off(self) -> str:
         return self._serial_wrapper.send("power off")
 
-    def reboot(self):
+    def reboot(self) -> str:
         return self._serial_wrapper.send("power reboot")
     
-    def reboot2dfu(self):
+    def reboot2dfu(self) -> str:
         return self._serial_wrapper.send("power reboot2dfu")
     
-    def info(self):
+    def info(self) -> dict:
         pattern = re.compile("([\w|_]+)\s+:\s([\w|\d]+)")
-        return { item[0]: int(item[1]) if item[1].isdigit() else item[1] for item in pattern.findall(self._serial_wrapper.send("power info"))}
+        items = pattern.findall(self._serial_wrapper.send("power info"))
+        return {x: int(y) if y.isdigit() else y for x, y in items}
     
