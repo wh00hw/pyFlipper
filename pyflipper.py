@@ -1,3 +1,4 @@
+from lib.rfid import RFID
 from lib.bt import Bt
 from lib.device_info import DeviceInfo
 from lib.free import Free
@@ -6,7 +7,6 @@ from lib.led import Led
 from lib.music_player import MusicPlayer
 from lib.nfc import NFC
 from lib.ps import Ps
-#from lib.rfid import RFID
 from lib.serial_wrapper import SerialWrapper
 from lib.storage import Storage
 from lib.vibro import Vibro
@@ -35,4 +35,5 @@ class PyFlipper:
         self.update = Update(serial_wrapper=self._serial_wrapper)
 #        self.log = Log(serial_wrapper=self._serial_wrapper)
         self.nfc = NFC(serial_wrapper=self._serial_wrapper)
-#        self.rfid = RFID(serial_wrapper=self._serial_wrapper)
+        self.rfid = RFID(serial_wrapper=self._serial_wrapper)
+        
