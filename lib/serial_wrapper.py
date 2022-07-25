@@ -27,3 +27,6 @@ class SerialWrapper:
     
     def ctrl_c(self):
         self._serial_port.write(b'\x03')
+    
+    def close(self):
+        self._serial_port.close()
