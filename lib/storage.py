@@ -56,7 +56,6 @@ class Storage:
         files_p = re.compile("\[F\]\s(.+)\s(\d+)(\w+)")
         response = self._serial_wrapper.send(f"storage {cmd} {path}")
         dirs = dirs_p.findall(response)
-        self.error_handler(response)
         files = [{'name': file[0], 'size': int(file[1]), 'weight': file[2]} for file in files_p.findall(response)]
         return {'dirs': dirs, 'files': files}
 
