@@ -43,7 +43,7 @@ flipper.power.reboot2dfu()
 flipper.update.install("/ext/update.fuf")
 
 #Backup Flipper to .tar file
-flipper.update.install("/ext/backup.tar")
+flipper.update.backup("/ext/backup.tar")
 
 #Restore Flipper from backup .tar file
 flipper.update.restore("/ext/backup.tar")
@@ -216,13 +216,13 @@ flipper.gpio.mode(PIN_NAME, 1)
 rttl_song = "Littleroot Town - Pokemon:d=4,o=5,b=100:8c5,8f5,8g5,4a5,8p,8g5,8a5,8g5,8a5,8a#5,8p,4c6,8d6,8a5,8g5,8a5,8c#6,4d6,4e6,4d6,8a5,8g5,8f5,8e5,8f5,8a5,4d6,8d5,8e5,2f5,8c6,8a#5,8a#5,8a5,2f5,8d6,8a5,8a5,8g5,2f5,8p,8f5,8d5,8f5,8e5,4e5,8f5,8g5"
 
 #Play in loop
-flipper.music_player.play(song)
+flipper.music_player.play(rttl_song)
 
 #Stop loop
 flipper.music_player.stop()
 
 #Play for 20 seconds
-flipper.music_player.play(song, duration=20)
+flipper.music_player.play(rttl_song, duration=20)
 
 #Beep
 flipper.music_player.beep()
