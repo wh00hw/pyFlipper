@@ -2,15 +2,24 @@
 
 Unoffical Flipper Zero cli wrapper written in Python
 
-## Installation
 
-Install PyFlipper with pip
+## Functions and characteristics:
+ - [x] Flipper serial CLI wrapper
+ - [x] Websocket client interface
+
+## Setup instructions:
 
 ```bash
+$ git clone https://github.com/wh00hw/pyFlipper.git
+$ cd PyFlipper
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
+### Tested on:
+ - [x] Python 3.8.10 on Linux 5.4.0 x86_64
+ - [x] Python 3.8.10 on Android 12 (Termux + OTGSerial2WebSocket NO ROOT REQUIRED)
+
 ## Usage/Examples
 
 ### Connection
@@ -18,8 +27,13 @@ $ pip install -r requirements.txt
 ```python
 from pyflipper import PyFlipper
 
-#Instantiate flipper object with the correct serial port
-flipper = PyFlipper("/dev/ttyACM0")
+#Local serial port
+flipper = PyFlipper(com="/dev/ttyACM0")
+
+#OR 
+
+#Remote serial2websocket server
+flipper = PyFlipper(ws="ws://192.168.1.5:1337")
 ```
 ### Power
 
@@ -40,13 +54,13 @@ flipper.power.reboot2dfu()
 
 ```python
 #Install update from .fuf file
-flipper.update.install("/ext/update.fuf")
+flipper.update.install(fuf_file="/ext/update.fuf")
 
 #Backup Flipper to .tar file
-flipper.update.backup("/ext/backup.tar")
+flipper.update.backup(dest_tar_file="/ext/backup.tar")
 
 #Restore Flipper from backup .tar file
-flipper.update.restore("/ext/backup.tar")
+flipper.update.restore(bak_tar_file="/ext/backup.tar")
 ```
 ### Loader
 
@@ -54,8 +68,8 @@ flipper.update.restore("/ext/backup.tar")
 #List installed apps
 apps = flipper.loader.list()
 
-#Open an app
-flipper.loader.open("Music Player")
+#Open app
+flipper.loader.open(app_name="Clock")
 ```
 
 ### Flipper Info
@@ -84,42 +98,39 @@ bt_info = flipper.bt.info()
 #### Filesystem Info
 ```python
 #Get the storage filesystem info
-ext_info = flipper.storage.info('/ext')
+ext_info = flipper.storage.info(fs='/ext')
 ```
 #### Explorer
 ```python
-#Get the storage /ext list
-ext_list = flipper.storage.list('/ext')
+#Get the storage /ext dict
+ext_list = flipper.storage.list(path='/ext')
 
-#Get the storage /ext tree
-ext_tree = flipper.storage.tree('/ext')
+#Get the storage /ext tree dict
+ext_tree = flipper.storage.tree(path='/ext')
 
 #Get file info
-file_info = flipper.storage.stat("/ext/foo/bar.txt")
+file_info = flipper.storage.stat(file="/ext/foo/bar.txt")
 
 #Make directory
-flipper.storage.mkdir("/ext/foo")
+flipper.storage.mkdir(new_dir="/ext/foo")
 ```
 #### Files
 
 ```python
 #Read file
-file= flipper.storage.read("/ext/foo/bar.txt")
-
-#Read file chunks
-file = flipper.storage.read("/ext/foo/bar.txt", 42)
+text_plain = flipper.storage.read(file="/ext/foo/bar.txt")
 
 #Remove file 
-flipper.storage.remove("/ext/foo/bar.txt")
+flipper.storage.remove(file="/ext/foo/bar.txt")
 
 #Copy file 
-flipper.storage.copy("/ext/foo/source.txt", "/ext/bar/destination.txt")
+flipper.storage.copy(src="/ext/foo/source.txt", dest="/ext/bar/destination.txt")
 
 #Rename file 
-flipper.storage.rename("/ext/foo/bar.txt", "/ext/foo/rab.txt")
+flipper.storage.rename(file="/ext/foo/bar.txt", new_file="/ext/foo/rab.txt")
 
 #MD5 Hash file 
-flipper.storage.md5("/ext/foo/bar.txt")
+md5_hash = flipper.storage.md5(file="/ext/foo/bar.txt")
 
 #Write file in one chunk
 file = "/ext/bar.txt"
@@ -131,7 +142,7 @@ If you are going to use a passage of Lorem Ipsum,
 you need to be sure there isn't anything embarrassing hidden in the middle of text. 
 """
 
-flipper.storage.write.write_chunk(file, text)
+flipper.storage.write.file(file, text)
 
 #Write file using a listener
 file = "/ext/foo.txt"
@@ -165,23 +176,23 @@ flipper.storage.write.stop()
 ### LED/Backlight
 
 ```python
-#Set red led on
-flipper.led.set('r', 255)
+#Set generic led on (r,b,g,bl)
+flipper.led.set(led='r', value=255)
 
 #Set blue led off
-flipper.led.set('b', 0)
+flipper.led.blue(value=0)
 
 #Set green led value
-flipper.led.set('g', 175)
+flipper.led.green(value=175)
 
 #Set backlight on
-flipper.led.set('bl', 255)
+flipper.led.backlight_on()
 
 #Set backlight off
-flipper.led.set('bl', 0)
+flipper.led.backlight_off()
 
-#Set backlight value
-flipper.led.set('bl', 175)
+#Turn off led
+flipper.led.off()
 
 ```
 ### Vibro
@@ -200,13 +211,13 @@ flipper.vibro.off()
 
 ```python
 #Set gpio mode: 0 - input, 1 - output
-flipper.gpio.mode(PIN_NAME, 1)
+flipper.gpio.mode(pin_name=PIN_NAME, value=1)
 
 #Read gpio pin value
-flipper.gpio.read(PIN_NAME)
+flipper.gpio.read(pin_name=PIN_NAME)
 
 #Set gpio pin value
-flipper.gpio.mode(PIN_NAME, 1)
+flipper.gpio.mode(pin_name=PIN_NAME, value=1)
 ```
 
 ### MusicPlayer
@@ -216,13 +227,13 @@ flipper.gpio.mode(PIN_NAME, 1)
 rttl_song = "Littleroot Town - Pokemon:d=4,o=5,b=100:8c5,8f5,8g5,4a5,8p,8g5,8a5,8g5,8a5,8a#5,8p,4c6,8d6,8a5,8g5,8a5,8c#6,4d6,4e6,4d6,8a5,8g5,8f5,8e5,8f5,8a5,4d6,8d5,8e5,2f5,8c6,8a#5,8a#5,8a5,2f5,8d6,8a5,8a5,8g5,2f5,8p,8f5,8d5,8f5,8e5,4e5,8f5,8g5"
 
 #Play in loop
-flipper.music_player.play(rttl_song)
+flipper.music_player.play(rtttl_code=rttl_song)
 
 #Stop loop
 flipper.music_player.stop()
 
 #Play for 20 seconds
-flipper.music_player.play(rttl_song, duration=20)
+flipper.music_player.play(rtttl_code=rttl_song, duration=20)
 
 #Beep
 flipper.music_player.beep()
@@ -233,28 +244,44 @@ flipper.music_player.beep(duration=5)
 ### NFC
 
 ```python
-#Define a callback
-def on_data(data):
-    print(data)
+#Synchronous default timeout 5 seconds
 
-#Detect NFC
-flipper.nfc.detect(callback=on_data, timeout=5)
+#Detect NFC 
+nfc_detected = flipper.nfc.detect()
 
 #Emulate NFC
-flipper.nfc.emulate(callback=on_data, timeout=5)
+flipper.nfc.emulate()
 
-#Activate field (Default timer is 10 seconds)
-flipper.nfc.field(callback=on_data)
+#Activate field
+flipper.nfc.field()
+```
+
+### RFID
+
+```python
+#Synchronous default timeout 5 seconds
+
+#Read RFID 
+rfid = flipper.rfid.read()
+```
+
+### SubGhz
+
+```python
+#Transmit hex_key N times(default count = 10)
+flipper.subghz.tx(hex_key="DEADBEEF", frequency=433920000, count=5)
+
+#TDecode raw .sub file
+decoded = flipper.subghz.tx(sub_file="/ext/subghz/foo.sub")
 ```
 
 ## Optimizations
 
 Feel free to contribute in any way
 
-## Roadmap
-
-- Implement all the cli functions
-
+- [ ] Queue Thread orchestrator (check dev branch)
+- [ ] Implement all the cli functions
+- [ ] Async SubGhz Chat (check dev branch)
 
 ## License
 
