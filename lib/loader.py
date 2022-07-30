@@ -19,5 +19,5 @@ class Loader:
                     
         return {x: y for x, y in result.items() if x or y}
     
-    def open(self, app_name: str) -> str:
-        return self._serial_wrapper.send(f"loader open {app_name}")
+    def open(self, app_name: str) -> None:
+        self._serial_wrapper.send(f"loader open {app_name}")

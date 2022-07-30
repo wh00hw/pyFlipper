@@ -8,6 +8,6 @@ class Date:
         result = self._serial_wrapper.send("date")
         return datetime.strptime(result, "%Y-%m-%d %H:%M:%S %w")
 
-    def timestamp(self) -> datetime:
+    def timestamp(self) -> float:
         return self.date().timestamp()
     

@@ -9,3 +9,23 @@ class Led:
             "Color must be 'r', 'b', 'g' or 'bl' for backlight."
 
         self._serial_wrapper.send(f"led {led} {value}")
+    
+    def red(self, value: int) -> None:
+        self.set(led='r', value=value)
+    
+    def green(self, value: int) -> None:
+        self.set(led='g', value=value)
+    
+    def blue(self, value: int) -> None:
+        self.set(led='r', value=value)
+    
+    def off(self) -> None:
+        self.red(value=0)
+        self.green(value=0)
+        self.blue(value=0)
+    
+    def backlight_on(self) -> None:
+        self.set(led='bl', value=255)
+    
+    def backlight_off(self) -> None:
+        self.set(led='bl', value=0)
