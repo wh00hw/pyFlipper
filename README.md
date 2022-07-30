@@ -11,7 +11,7 @@ Unoffical Flipper Zero cli wrapper written in Python
 
 ```bash
 $ git clone https://github.com/wh00hw/pyFlipper.git
-$ cd PyFlipper
+$ cd pyFlipper
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt

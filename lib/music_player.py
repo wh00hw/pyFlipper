@@ -11,4 +11,4 @@ class MusicPlayer(Threaded):
         self.exec(func=_run, timeout=duration)
     
     def beep(self, duration: float = 0.2):
-        self.play("Beep:d=8,o=5,b=80:2b5", timeout=duration)
+        self.play("Beep:d=8,o=5,b=80:2b5", duration=duration)
