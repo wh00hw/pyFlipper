@@ -27,6 +27,9 @@ class LocalSerial:
         self._serial_port.readline()
         return self._serial_port.read_until(b'>:').decode().rstrip('\r\n')
     
+    def write(self, msg):
+        self._serial_port.write(msg)
+    
     def ctrl_c(self):
         self._serial_port.write(b'\x03')
 
@@ -42,6 +45,9 @@ class WSSerial:
         while ">:" not in line:
             line += self.ws.recv()
         return line.split(f'{payload}\r\n')[-1].rstrip('\r\n>: ')
+    
+    def write(self, msg):
+        self.ws.send_binary(msg)
 
     def ctrl_c(self):
         self.ws.send_binary(b'\x03')

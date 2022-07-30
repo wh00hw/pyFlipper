@@ -6,9 +6,10 @@ from lib.led import Led
 from lib.music_player import MusicPlayer
 from lib.nfc import NFC
 from lib.ps import Ps
-#from lib.rfid import RFID
+from lib.rfid import RFID
 from lib.serial_wrapper import LocalSerial, WSSerial
 from lib.storage import Storage
+from lib.subghz import Subghz
 from lib.vibro import Vibro
 from lib.date import Date
 from lib.gpio import Gpio
@@ -39,4 +40,5 @@ class PyFlipper:
         self.update = Update(serial_wrapper=self._serial_wrapper)
 #        self.log = Log(serial_wrapper=self._serial_wrapper)
         self.nfc = NFC(serial_wrapper=self._serial_wrapper)
-#        self.rfid = RFID(serial_wrapper=self._serial_wrapper)
+        self.rfid = RFID(serial_wrapper=self._serial_wrapper)
+        self.subghz = Subghz(serial_wrapper=self._serial_wrapper)
