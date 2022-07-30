@@ -1,10 +1,7 @@
-from curses.ascii import isdigit
 import re
 
-from .serial_wrapper import SerialWrapper
-
 class Power:
-    def __init__(self, serial_wrapper: SerialWrapper) -> None:
+    def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
     
     def off(self) -> str:

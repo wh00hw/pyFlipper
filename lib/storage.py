@@ -2,15 +2,13 @@ import re
 import threading
 import time
 
-from .serial_wrapper import SerialWrapper
-
 
 # TODO: Leverage pathlib to validate and manage file paths
 
 
 class Storage:
     class Write:
-        def __init__(self, serial_wrapper: SerialWrapper) -> None:
+        def __init__(self, serial_wrapper) -> None:
             self._serial_wrapper = serial_wrapper
             self.thread = None
 
@@ -33,7 +31,7 @@ class Storage:
             threading.Thread(target=self._serial_wrapper.send, args=(f"storage write_chunk {path} {len(text)}",)).start()
             self._serial_wrapper._serial_port.write(text)
 
-    def __init__(self, serial_wrapper: SerialWrapper) -> None:
+    def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
         self.write = __class__.Write(serial_wrapper=serial_wrapper)
 

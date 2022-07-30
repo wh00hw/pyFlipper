@@ -1,6 +1,8 @@
+
 import time
 import serial
 import re
+from websocket import create_connection
 
 def error_handler(func):
     def handler(*args):
@@ -12,11 +14,11 @@ def error_handler(func):
         return result        
     return handler
 
-class SerialWrapper:
-    def __init__(self, port) -> None:
-        self._serial_port = serial.Serial(port=port, baudrate=9600,
+class LocalSerial:
+    def __init__(self, com) -> None:
+        self._serial_port = serial.Serial(port=com, baudrate=9600,
                                          bytesize=8, timeout=None, stopbits=serial.STOPBITS_ONE)
-        self._serial_port.read_until(b'>:')
+        self._serial_port.read_until(b'>:') #skip welcome banner
 
     @error_handler
     def send(self, payload: str) -> str:
@@ -27,3 +29,19 @@ class SerialWrapper:
     
     def ctrl_c(self):
         self._serial_port.write(b'\x03')
+
+class WSSerial:
+    def __init__(self, ws) -> None:
+        self.ws = create_connection(ws)
+        self.ws.recv() #skip welcome
+
+    @error_handler
+    def send(self, payload: str) -> str:
+        self.ws.send_binary(f"{payload}\r".encode())
+        line = ""
+        while ">:" not in line:
+            line += self.ws.recv()
+        return line.split(f'{payload}\r\n')[-1].rstrip('\r\n>: ')
+
+    def ctrl_c(self):
+        self.ws.send_binary(b'\x03')

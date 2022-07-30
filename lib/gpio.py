@@ -1,7 +1,6 @@
-from .serial_wrapper import SerialWrapper
 
 class Gpio:
-    def __init__(self, serial_wrapper: SerialWrapper) -> None:
+    def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
     
     def mode(self, pin_name: str, value: int) -> str:

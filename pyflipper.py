@@ -7,7 +7,7 @@ from lib.music_player import MusicPlayer
 from lib.nfc import NFC
 from lib.ps import Ps
 #from lib.rfid import RFID
-from lib.serial_wrapper import SerialWrapper
+from lib.serial_wrapper import LocalSerial, WSSerial
 from lib.storage import Storage
 from lib.vibro import Vibro
 from lib.date import Date
@@ -18,8 +18,12 @@ from lib.update import Update
 
 class PyFlipper:
 
-    def __init__(self, port) -> None:
-        self._serial_wrapper = SerialWrapper(port=port)
+    def __init__(self, **kwargs) -> None:
+        assert bool(kwargs.get('com')) ^ bool(kwargs.get('ws')), "COM or Websocket required"
+        if kwargs.get('com'):
+                self._serial_wrapper = LocalSerial(com=kwargs['com'])
+        else:
+                self._serial_wrapper = WSSerial(ws=kwargs['ws']) 
         self.vibro = Vibro(serial_wrapper=self._serial_wrapper)
         self.date = Date(serial_wrapper=self._serial_wrapper)
         self.device_info = DeviceInfo(serial_wrapper=self._serial_wrapper)
