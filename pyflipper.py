@@ -1,6 +1,7 @@
 from lib.bt import Bt
 from lib.device_info import DeviceInfo
 from lib.free import Free
+from lib.ikey import Ikey
 from lib.ir import Ir
 from lib.led import Led
 #from lib.log import Log
@@ -44,3 +45,4 @@ class PyFlipper:
         self.rfid = RFID(serial_wrapper=self._serial_wrapper)
         self.subghz = Subghz(serial_wrapper=self._serial_wrapper)
         self.ir = Ir(serial_wrapper=self._serial_wrapper)
+        self.ikey = Ikey(serial_wrapper=self._serial_wrapper)
