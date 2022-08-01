@@ -4,6 +4,7 @@ from lib.free import Free
 from lib.ikey import Ikey
 from lib.ir import Ir
 from lib.led import Led
+from lib.log import Log
 #from lib.log import Log
 from lib.music_player import MusicPlayer
 from lib.nfc import NFC
@@ -40,7 +41,7 @@ class PyFlipper:
         self.music_player = MusicPlayer(serial_wrapper=self._serial_wrapper)
         self.power = Power(serial_wrapper=self._serial_wrapper)
         self.update = Update(serial_wrapper=self._serial_wrapper)
-#        self.log = Log(serial_wrapper=self._serial_wrapper)
+        self.log = Log(serial_wrapper=self._serial_wrapper)
         self.nfc = NFC(serial_wrapper=self._serial_wrapper)
         self.rfid = RFID(serial_wrapper=self._serial_wrapper)
         self.subghz = Subghz(serial_wrapper=self._serial_wrapper)

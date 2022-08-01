@@ -301,6 +301,13 @@ ikey = flipper.ikey.write(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
 flipper.ikey.emulate(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
 ```
 
+### Log
+
+```python
+#Attach event logger (default timeout 10 seconds)
+logs = flipper.log.attach()
+```
+
 ## Optimizations
 
 Feel free to contribute in any way
