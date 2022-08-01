@@ -328,6 +328,13 @@ flipper.debug.off()
 response = flipper.onewire.search()
 ```
 
+### I2C
+
+```python
+#Get
+response = flipper.i2c.get()
+```
+
 ## Optimizations
 
 Feel free to contribute in any way

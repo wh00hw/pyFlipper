@@ -2,6 +2,7 @@ from lib.bt import Bt
 from lib.debug import Debug
 from lib.device_info import DeviceInfo
 from lib.free import Free
+from lib.i2c import I2c
 from lib.ikey import Ikey
 from lib.ir import Ir
 from lib.led import Led
@@ -51,3 +52,4 @@ class PyFlipper:
         self.ikey = Ikey(serial_wrapper=self._serial_wrapper)
         self.debug = Debug(serial_wrapper=self._serial_wrapper)
         self.onewire = Onewire(serial_wrapper=self._serial_wrapper)
+        self.i2c = I2c(serial_wrapper=self._serial_wrapper)
