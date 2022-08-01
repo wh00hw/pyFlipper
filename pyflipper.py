@@ -9,6 +9,7 @@ from lib.log import Log
 #from lib.log import Log
 from lib.music_player import MusicPlayer
 from lib.nfc import NFC
+from lib.onewire import Onewire
 from lib.ps import Ps
 from lib.rfid import RFID
 from lib.serial_wrapper import LocalSerial, WSSerial
@@ -49,3 +50,4 @@ class PyFlipper:
         self.ir = Ir(serial_wrapper=self._serial_wrapper)
         self.ikey = Ikey(serial_wrapper=self._serial_wrapper)
         self.debug = Debug(serial_wrapper=self._serial_wrapper)
+        self.onewire = Onewire(serial_wrapper=self._serial_wrapper)

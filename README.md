@@ -90,6 +90,9 @@ device_info = flipper.device_info.info()
 #Get heap info dict
 heap = flipper.free.info()
 
+#Get free_blocks string
+free_blocks = flipper.free.blocks()
+
 #Get bluetooth info
 bt_info = flipper.bt.info()
 ```
@@ -316,6 +319,13 @@ flipper.debug.on()
 
 #Deactivate debug mode
 flipper.debug.off()
+```
+
+### Onewire
+
+```python
+#Search
+response = flipper.onewire.search()
 ```
 
 ## Optimizations
