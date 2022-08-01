@@ -1,4 +1,5 @@
 from lib.bt import Bt
+from lib.debug import Debug
 from lib.device_info import DeviceInfo
 from lib.free import Free
 from lib.ikey import Ikey
@@ -47,3 +48,4 @@ class PyFlipper:
         self.subghz = Subghz(serial_wrapper=self._serial_wrapper)
         self.ir = Ir(serial_wrapper=self._serial_wrapper)
         self.ikey = Ikey(serial_wrapper=self._serial_wrapper)
+        self.debug = Debug(serial_wrapper=self._serial_wrapper)

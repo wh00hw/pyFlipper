@@ -308,6 +308,16 @@ flipper.ikey.emulate(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
 logs = flipper.log.attach()
 ```
 
+### Debug
+
+```python
+#Activate debug mode
+flipper.debug.on()
+
+#Deactivate debug mode
+flipper.debug.off()
+```
+
 ## Optimizations
 
 Feel free to contribute in any way
