@@ -4,6 +4,7 @@ from lib.device_info import DeviceInfo
 from lib.free import Free
 from lib.i2c import I2c
 from lib.ikey import Ikey
+from lib.input import Input
 from lib.ir import Ir
 from lib.led import Led
 from lib.log import Log
@@ -53,3 +54,4 @@ class PyFlipper:
         self.debug = Debug(serial_wrapper=self._serial_wrapper)
         self.onewire = Onewire(serial_wrapper=self._serial_wrapper)
         self.i2c = I2c(serial_wrapper=self._serial_wrapper)
+        self.input = Input(serial_wrapper=self._serial_wrapper)

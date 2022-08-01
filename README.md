@@ -335,6 +335,16 @@ response = flipper.onewire.search()
 response = flipper.i2c.get()
 ```
 
+### Input
+
+```python
+#Input dump
+dump = flipper.input.dump()
+
+#Send input
+flipper.input.send("up", "press")
+```
+
 ## Optimizations
 
 Feel free to contribute in any way
