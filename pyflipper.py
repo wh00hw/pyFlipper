@@ -1,6 +1,7 @@
 from lib.bt import Bt
 from lib.device_info import DeviceInfo
 from lib.free import Free
+from lib.ir import Ir
 from lib.led import Led
 #from lib.log import Log
 from lib.music_player import MusicPlayer
@@ -42,3 +43,4 @@ class PyFlipper:
         self.nfc = NFC(serial_wrapper=self._serial_wrapper)
         self.rfid = RFID(serial_wrapper=self._serial_wrapper)
         self.subghz = Subghz(serial_wrapper=self._serial_wrapper)
+        self.ir = Ir(serial_wrapper=self._serial_wrapper)

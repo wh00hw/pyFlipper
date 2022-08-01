@@ -18,7 +18,7 @@ $ pip install -r requirements.txt
 ```
 ### Tested on:
  - [x] Python 3.8.10 on Linux 5.4.0 x86_64
- - [x] Python 3.8.10 on Android 12 (Termux + OTGSerial2WebSocket NO ROOT REQUIRED)
+ - [x] Python 3.10.5 on Android 12 (Termux + OTGSerial2WebSocket NO ROOT REQUIRED)
 
 ## Usage/Examples
 
@@ -98,15 +98,15 @@ bt_info = flipper.bt.info()
 #### Filesystem Info
 ```python
 #Get the storage filesystem info
-ext_info = flipper.storage.info(fs='/ext')
+ext_info = flipper.storage.info(fs="/ext")
 ```
 #### Explorer
 ```python
 #Get the storage /ext dict
-ext_list = flipper.storage.list(path='/ext')
+ext_list = flipper.storage.list(path="/ext")
 
 #Get the storage /ext tree dict
-ext_tree = flipper.storage.tree(path='/ext')
+ext_tree = flipper.storage.tree(path="/ext")
 
 #Get file info
 file_info = flipper.storage.stat(file="/ext/foo/bar.txt")
@@ -118,7 +118,7 @@ flipper.storage.mkdir(new_dir="/ext/foo")
 
 ```python
 #Read file
-text_plain = flipper.storage.read(file="/ext/foo/bar.txt")
+plain_text = flipper.storage.read(file="/ext/foo/bar.txt")
 
 #Remove file 
 flipper.storage.remove(file="/ext/foo/bar.txt")
@@ -271,8 +271,34 @@ rfid = flipper.rfid.read()
 #Transmit hex_key N times(default count = 10)
 flipper.subghz.tx(hex_key="DEADBEEF", frequency=433920000, count=5)
 
-#TDecode raw .sub file
+#Decode raw .sub file
 decoded = flipper.subghz.tx(sub_file="/ext/subghz/foo.sub")
+```
+### Infrared
+
+```python
+#Transmit hex_address and hex_command selecting a protocol
+flipper.ir.tx(protocol="Samsung32", hex_address="C000FFEE", hex_command="DEADBEEF")
+
+#Raw Transmit samples
+flipper.ir.tx_raw(frequency=38000, duty_cycle=0.33, samples=[1337, 8888, 3000, 5555])
+
+#Synchronous default timeout 5 seconds
+#Receive tx 
+r = flipper.ir.rx(timeout=10)
+```
+
+### IKEY
+
+```python
+#Read (default timeout 5 seconds)
+ikey = flipper.ikey.read()
+
+#Write (default timeout 5 seconds)
+ikey = flipper.ikey.write(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
+
+#Emulate (default timeout 5 seconds)
+flipper.ikey.emulate(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
 ```
 
 ## Optimizations
