@@ -275,7 +275,7 @@ rfid = flipper.rfid.read()
 flipper.subghz.tx(hex_key="DEADBEEF", frequency=433920000, count=5)
 
 #Decode raw .sub file
-decoded = flipper.subghz.tx(sub_file="/ext/subghz/foo.sub")
+decoded = flipper.subghz.decode_raw(sub_file="/ext/subghz/foo.sub")
 ```
 ### Infrared
 
