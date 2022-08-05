@@ -65,7 +65,7 @@ class Storage:
 
     def read(self, file: str) -> str:
         try:
-            return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[-1]
+            return self._serial_wrapper.send(f"storage read {file}").split('\r\n')[1]
         except IndexError:
             return ""
             
