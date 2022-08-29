@@ -18,6 +18,7 @@ $ pip install -r requirements.txt
 ```
 ### Tested on:
  - [x] Python 3.8.10 on Linux 5.4.0 x86_64
+ - [x] Python 3.9.10 on Windows 10
  - [x] Python 3.10.5 on Android 12 (Termux + OTGSerial2WebSocket NO ROOT REQUIRED)
 
 ## Usage/Examples
@@ -298,7 +299,7 @@ r = flipper.ir.rx(timeout=10)
 ikey = flipper.ikey.read()
 
 #Write (default timeout 5 seconds)
-ikey = flipper.ikey.write(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
+flipper.ikey.write(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
 
 #Emulate (default timeout 5 seconds)
 flipper.ikey.emulate(key_type="Dallas", key_data="DEADBEEFCOOOFFEE")
@@ -349,9 +350,9 @@ flipper.input.send("up", "press")
 
 Feel free to contribute in any way
 
-- [ ] Queue Thread orchestrator (check dev branch)
+- [ ] Queue Thread orchestrator
 - [ ] Implement all the cli functions
-- [ ] Async SubGhz Chat (check dev branch)
+- [ ] Async SubGhz Chat
 
 ## License
 
