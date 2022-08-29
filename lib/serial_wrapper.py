@@ -23,7 +23,7 @@ class LocalSerial:
     @error_handler
     def send(self, payload: str) -> str:
         self._serial_port.write(f"{payload}\r".encode())
-        time.sleep(0.5)
+        #time.sleep(0.5)
         self._serial_port.readline()
         return self._serial_port.read_until(b'>:').decode().rstrip('\r\n')
     
