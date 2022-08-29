@@ -19,7 +19,7 @@ class NFC(Threaded):
 
     def emulate(self, timeout: int = 5) -> None:
         def _run() -> str:
-            data = self._serial_wrapper.send("nfc detect")
+            data = self._serial_wrapper.send("nfc emulate")
             #TODO parse data
             return data
         self.exec(func=None, timeout=timeout)
