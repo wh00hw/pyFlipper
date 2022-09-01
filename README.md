@@ -2,6 +2,8 @@
 
 Unoffical Flipper Zero cli wrapper written in Python
 
+## Articles
+- [How to hack a restaurant](https://medium.com/@nic_whr/how-to-hack-a-restaurant-5d394be105a9)
 
 ## Functions and characteristics:
  - [x] Flipper serial CLI wrapper
@@ -19,7 +21,7 @@ $ pip install -r requirements.txt
 ### Tested on:
  - [x] Python 3.8.10 on Linux 5.4.0 x86_64
  - [x] Python 3.9.10 on Windows 10
- - [x] Python 3.10.5 on Android 12 (Termux + OTGSerial2WebSocket NO ROOT REQUIRED)
+ - [x] Python 3.10.5 on Android 12 (Termux + [OTGSerial2WebSocket](https://play.google.com/store/apps/details?id=com.wh00hw.serial2websocket) NO ROOT REQUIRED)
 
 ## Usage/Examples
 
