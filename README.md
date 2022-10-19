@@ -269,6 +269,14 @@ flipper.nfc.field()
 
 #Read RFID 
 rfid = flipper.rfid.read()
+
+#Emulate RFID 
+emulated = flipper.rfid.emulate(key_type="EM4100", key_data="5500824806")
+
+#Write RFID 
+written = flipper.rfid.write(key_type="EM4100", key_data="5500824806")
+
+
 ```
 
 ### SubGhz
