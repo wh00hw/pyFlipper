@@ -2,6 +2,8 @@
 
 Unoffical Flipper Zero cli wrapper written in Python
 
+![](https://thumb.tildacdn.com/tild3332-3839-4061-b663-363464303432/-/resize/214x/-/format/webp/noroot.png)
+
 ## Articles
 - [How to hack a restaurant](https://medium.com/@nic_whr/how-to-hack-a-restaurant-5d394be105a9)
 
