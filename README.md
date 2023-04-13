@@ -288,7 +288,7 @@ written = flipper.rfid.write(key_type="EM4100", key_data="5500824806")
 flipper.subghz.tx(hex_key="DEADBEEF", frequency=433920000, count=5)
 
 #Receive (default frequency=433920000 raw=False timeout=5 seconds)
-received = flipper.subghz.rx(frequency="433920000", raw=True, count=5)
+received = flipper.subghz.rx(frequency="433920000", raw=True, timeout=10)
 
 #Decode raw .sub file
 decoded = flipper.subghz.decode_raw(sub_file="/ext/subghz/foo.sub")
