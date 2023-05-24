@@ -1,28 +1,28 @@
-from lib.bt import Bt
-from lib.debug import Debug
-from lib.device_info import DeviceInfo
-from lib.free import Free
-from lib.i2c import I2c
-from lib.ikey import Ikey
-from lib.input import Input
-from lib.ir import Ir
-from lib.led import Led
-from lib.log import Log
-#from lib.log import Log
-from lib.music_player import MusicPlayer
-from lib.nfc import NFC
-from lib.onewire import Onewire
-from lib.ps import Ps
-from lib.rfid import RFID
-from lib.serial_wrapper import LocalSerial, WSSerial
-from lib.storage import Storage
-from lib.subghz import Subghz
-from lib.vibro import Vibro
-from lib.date import Date
-from lib.gpio import Gpio
-from lib.loader import Loader
-from lib.power import Power
-from lib.update import Update
+from .lib.bt import Bt
+from .lib.debug import Debug
+from .lib.device_info import DeviceInfo
+from .lib.free import Free
+from .lib.i2c import I2c
+from .lib.ikey import Ikey
+from .lib.input import Input
+from .lib.ir import Ir
+from .lib.led import Led
+from .lib.log import Log
+#from .lib.log import Log
+from .lib.music_player import MusicPlayer
+from .lib.nfc import NFC
+from .lib.onewire import Onewire
+from .lib.ps import Ps
+from .lib.rfid import RFID
+from .lib.serial_wrapper import LocalSerial, WSSerial
+from .lib.storage import Storage
+from .lib.subghz import Subghz
+from .lib.vibro import Vibro
+from .lib.date import Date
+from .lib.gpio import Gpio
+from .lib.loader import Loader
+from .lib.power import Power
+from .lib.update import Update
 
 class PyFlipper:
 

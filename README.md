@@ -14,11 +14,7 @@ Unoffical Flipper Zero cli wrapper written in Python
 ## Setup instructions:
 
 ```bash
-$ git clone https://github.com/wh00hw/pyFlipper.git
-$ cd pyFlipper
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
+$ pip install pyflipper
 ```
 ### Tested on:
  - [x] Python 3.8.10 on Linux 5.4.0 x86_64
@@ -30,7 +26,7 @@ $ pip install -r requirements.txt
 ### Connection
 
 ```python
-from pyflipper import PyFlipper
+from pyflipper.pyflipper import PyFlipper
 
 #Local serial port
 flipper = PyFlipper(com="/dev/ttyACM0")
