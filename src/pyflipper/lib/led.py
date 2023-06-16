@@ -17,7 +17,7 @@ class Led:
         self.set(led='g', value=value)
     
     def blue(self, value: int) -> None:
-        self.set(led='r', value=value)
+        self.set(led='b', value=value)
     
     def off(self) -> None:
         self.red(value=0)
