@@ -1,4 +1,6 @@
 
+import os
+import socket
 import serial
 import re
 from websocket import create_connection
@@ -50,3 +52,30 @@ class WSSerial:
 
     def ctrl_c(self):
         self.ws.send_binary(b'\x03')
+
+class TcpSerial:
+    def __init__(self, addr) -> None:
+        host, _, port = addr.partition(':')
+        port = int(port)
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket.connect((host, port))
+        self._read_response()
+
+    @error_handler
+    def send(self, payload: str) -> str:
+        self._socket.sendall(f"{payload}\r".encode())
+        return self._read_response()
+
+    def write(self, msg):
+        self._socket.sendall(msg)
+
+    def ctrl_c(self):
+        self._socket.sendall(b'\x03')
+
+    def _read_response(self):
+        buff = ''
+        while True:
+            buff += self._socket.recv(1024).decode()
+            if '>:' in buff:
+                break
+        return '\n'.join(buff.splitlines()[1:-2])

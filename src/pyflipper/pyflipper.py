@@ -14,7 +14,7 @@ from .lib.nfc import NFC
 from .lib.onewire import Onewire
 from .lib.ps import Ps
 from .lib.rfid import RFID
-from .lib.serial_wrapper import LocalSerial, WSSerial
+from .lib.serial_wrapper import LocalSerial, WSSerial, TcpSerial
 from .lib.storage import Storage
 from .lib.subghz import Subghz
 from .lib.vibro import Vibro
@@ -27,11 +27,14 @@ from .lib.update import Update
 class PyFlipper:
 
     def __init__(self, **kwargs) -> None:
-        assert bool(kwargs.get('com')) ^ bool(kwargs.get('ws')), "COM or Websocket required"
+        assert sum(bool(kwargs.get(k)) for k in ('com', 'ws', 'tcp')) == 1, \
+            'Only one of com, ws, tcp should be specified'
         if kwargs.get('com'):
-                self._serial_wrapper = LocalSerial(com=kwargs['com'])
+            self._serial_wrapper = LocalSerial(com=kwargs['com'])
+        elif kwargs.get('ws'):
+            self._serial_wrapper = WSSerial(ws=kwargs['ws']) 
         else:
-                self._serial_wrapper = WSSerial(ws=kwargs['ws']) 
+            self._serial_wrapper = TcpSerial(addr=kwargs['tcp']) 
         self.vibro = Vibro(serial_wrapper=self._serial_wrapper)
         self.date = Date(serial_wrapper=self._serial_wrapper)
         self.device_info = DeviceInfo(serial_wrapper=self._serial_wrapper)
