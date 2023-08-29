@@ -59,24 +59,23 @@ class TcpSerial:
         port = int(port)
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._socket.connect((host, port))
-        buff = ''
-        while True:
-            buff += self._socket.recv(1024).decode()
-            if '>:' in buff:
-                break
+        self._read_response()
 
     @error_handler
     def send(self, payload: str) -> str:
         self._socket.sendall(f"{payload}\r".encode())
-        buff = ''
-        while True:
-            buff += self._socket.recv(1024).decode()
-            if '>:' in buff:
-                break
-        return '\n'.join(buff.splitlines()[1:-2])
+        return self._read_response()
 
     def write(self, msg):
         self._socket.sendall(msg)
 
     def ctrl_c(self):
         self._socket.sendall(b'\x03')
+
+    def _read_response(self):
+        buff = ''
+        while True:
+            buff += self._socket.recv(1024).decode()
+            if '>:' in buff:
+                break
+        return '\n'.join(buff.splitlines()[1:-2])
