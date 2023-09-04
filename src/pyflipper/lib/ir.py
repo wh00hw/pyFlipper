@@ -13,8 +13,6 @@ class Ir(Threaded):
         assert protocol in self.PROTOCOLS, f"Available protocols: {self.PROTOCOLS}"
         assert is_hexstring(hex_address), "hex_address must be hexstring"
         assert is_hexstring(hex_command), "hex_command must be hexstring"
-        assert len(hex_address.replace(' ', '')) == 8 and len(hex_command.replace(
-            ' ', '')) == 8, "hex_address and hex_command must be 4 bytes long each"
         address = ' '.join(hex_address[i:i+2] for i in range(0, len(hex_address), 2)) if " " not in hex_address else hex_address
         command = ' '.join(hex_command[i:i+2] for i in range(0, len(hex_command), 2)) if " " not in hex_command else hex_command
         self._serial_wrapper.send(f"ir tx {protocol} {address} {command}")
