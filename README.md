@@ -26,7 +26,7 @@ $ pip install pyflipper
 ### Connection
 
 ```python
-from pyflipper.pyflipper import PyFlipper
+from pyflipper import PyFlipper
 
 #Local serial port
 flipper = PyFlipper(com="/dev/ttyACM0")
