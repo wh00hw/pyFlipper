@@ -35,6 +35,10 @@ flipper = PyFlipper(com="/dev/ttyACM0")
 
 #Remote serial2websocket server
 flipper = PyFlipper(ws="ws://192.168.1.5:1337")
+
+# TCP
+flipper = PyFlipper(tcp='192.168.89.222:22170')
+
 ```
 ### Power
 
