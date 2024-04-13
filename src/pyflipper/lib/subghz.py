@@ -8,6 +8,11 @@ class Subghz(Threaded):
         # TODO: params assertion and check if default frequency is allowed worldwide
         return self._serial_wrapper.send(f"subghz tx {hex_key} {frequency} {te} {count}")
 
+    def tx_from_file(self, file_name: str, repeat: int = 1, device: int = 0):
+        assert repeat > 0
+        assert device in (0, 1)  # 0 => CC1101_INT, 1 => CC1101_EXT
+        return self._serial_wrapper.send(f"subghz tx_from_file {file_name} {repeat} {device}")
+
     def rx(self, frequency: int = 433920000, raw: bool = False, timeout: int = 5):
         # TODO: params assertion and check if default frequency is allowed worldwide
         cmd = "rx" if not raw else "rx_raw"
