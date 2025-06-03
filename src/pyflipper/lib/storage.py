@@ -37,7 +37,7 @@ class Storage:
         info_p = re.compile("(\w+):\s(.+)")
         response = self._serial_wrapper.send(f"storage info {fs}")
         info = info_p.findall(response)
-        size_p = re.compile("(\d+)KB\s(\w+)")
+        size_p = re.compile("(\d+)KiB\s(\w+)")
         size = size_p.findall(response)
         return { info[0][0]: info[0][1].rstrip(), info[1][0]: info[1][1].rstrip(), size[0][1]+"_KB": int(size[0][0]), size[1][1]+"_KB": int(size[1][0])}
     
