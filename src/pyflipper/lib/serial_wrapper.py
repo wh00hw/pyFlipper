@@ -19,6 +19,7 @@ class LocalSerial:
     def __init__(self, com) -> None:
         self._serial_port = serial.Serial(port=com, baudrate=9600,
                                          bytesize=8, timeout=None, stopbits=serial.STOPBITS_ONE)
+        self._serial_port.write(f"\n\n\r".encode())
         self._serial_port.read_until(b'>:') #skip welcome banner
 
     @error_handler
