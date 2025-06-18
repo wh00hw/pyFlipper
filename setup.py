@@ -8,7 +8,7 @@ setuptools.setup(
   name = 'pyflipper',      
   package_dir={'': 'src'},
   packages=setuptools.find_packages(where='src'),
-  version = '0.20',
+  version = '0.21',
   license='MIT',
   long_description=readme,
   long_description_content_type='text/markdown',
