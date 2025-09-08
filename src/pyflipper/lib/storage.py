@@ -29,7 +29,7 @@ class Storage:
             self._serial_wrapper._serial_port.write(b"\x03")  # Ctrl-C
             return self._serial_wrapper.send("", wait_for_prompt=True)  # will read the prompt
         
-        def file(self, text: str, path: str) -> None:
+        def file(self, path: str, text: str) -> None:
             self.start(path)
             self.send(text)
             self.stop()
