@@ -9,19 +9,25 @@ from .threaded import Threaded
 
 class Storage:
     class Write(Threaded):
-        def __init__(self, serial_wrapper) -> None:
+        def __init__(self, serial_wrapper):
             self._serial_wrapper = serial_wrapper
 
-        def start(self, file: str) -> None:
-            def _run():
-                self._serial_wrapper.send(f"storage write {file}")
-            self.exec(func=_run, timeout=None)
+        def start(self, file: str):
+            # Enter listener mode; DO NOT wait for a prompt
+            self._serial_wrapper.send(f"storage write {file}", wait_for_prompt=False)
 
-        def send(self, text: str) -> None:
-            if self.thread.is_alive():
-                #replace carriage return with ctrl+Enter
-                self._serial_wrapper.write(text.replace('\r\n', '\x0d').encode())
-                time.sleep(0.5)
+        def send(self, payload: str | bytes):
+            # Stream raw text or bytes; DO NOT wait for a prompt
+            if isinstance(payload, str):
+                buf = payload.encode("utf-8")
+            else:
+                buf = bytes(payload)
+            self._serial_wrapper._serial_port.write(buf)
+
+        def stop(self):
+            # Exit listener (Ctrl-C), THEN wait for prompt
+            self._serial_wrapper._serial_port.write(b"\x03")  # Ctrl-C
+            return self._serial_wrapper.send("", wait_for_prompt=True)  # will read the prompt
         
         def file(self, text: str, path: str) -> None:
             self.start(path)
@@ -82,5 +88,4 @@ class Storage:
 
     def stat(self, file: str) -> str:
         return self._serial_wrapper.send(f"storage stat {file}")
-
 

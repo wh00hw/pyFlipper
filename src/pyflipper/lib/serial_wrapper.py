@@ -4,11 +4,12 @@ import socket
 import serial
 import re
 from websocket import create_connection
+from functools import wraps
 
 def error_handler(func):
-    def handler(*args):
-        result = func(*args)
-        pattern = re.compile("\w+\serror:\s.*")
+    def handler(*args, **kwargs):
+        result = func(*args, **kwargs)
+        pattern = re.compile("\\w+\\serror:\\s.*")
         match = pattern.match(result)
         if match:
             raise Exception(match.group())
@@ -23,11 +24,24 @@ class LocalSerial:
         self._serial_port.read_until(b'>:') #skip welcome banner
 
     @error_handler
-    def send(self, payload: str) -> str:
+    def send(self, payload: str, *, wait_for_prompt: bool = True, prompt=b'>:', timeout: float = 1.0) -> str:
+        # ALWAYS write the command + CR
         self._serial_port.write(f"{payload}\r".encode())
-        #time.sleep(0.5)
-        self._serial_port.readline()
-        return self._serial_port.read_until(b'>:').decode().rstrip('\r\n')
+
+        if not wait_for_prompt:
+            return ""  # don't block
+
+       # Drain one line (command echo or banner) if present, but don't block forever
+        self._serial_port.timeout = max(self._serial_port.timeout or 0, 0.3)
+        try:
+           self._serial_port.readline()  # tolerate no-echo            
+        except Exception:
+            pass
+
+        # Wait for prompt (OK/error/prompt) with a timeout
+        self._serial_port.timeout = timeout
+        out = self._serial_port.read_until(prompt)
+        return out.decode(errors="replace").rstrip("\r\n")
     
     def write(self, msg):
         self._serial_port.write(msg)
