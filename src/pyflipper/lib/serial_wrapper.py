@@ -1,5 +1,5 @@
 
-import os
+
 import socket
 import serial
 import re
@@ -8,7 +8,7 @@ from websocket import create_connection
 def error_handler(func):
     def handler(*args):
         result = func(*args)
-        pattern = re.compile("\w+\serror:\s.*")
+        pattern = re.compile(r"\w+\serror:\s.*")
         match = pattern.match(result)
         if match:
             raise Exception(match.group())
@@ -24,11 +24,33 @@ class LocalSerial:
 
     @error_handler
     def send(self, payload: str) -> str:
+        # empty buffer before sending
+        try:
+            self._serial_port.reset_input_buffer()
+        except AttributeError:
+            # fallback: in case reset_input_buffer is not available, read until empty
+            while self._serial_port.in_waiting:
+                self._serial_port.read(self._serial_port.in_waiting)
+
         self._serial_port.write(f"{payload}\r".encode())
-        #time.sleep(0.5)
-        self._serial_port.readline()
-        return self._serial_port.read_until(b'>:').decode().rstrip('\r\n')
-    
+
+        # await echo
+        try:
+            self._serial_port.read_until(f"{payload}\r".encode())
+        except Exception:
+            # continue if timing out
+            pass
+
+        # read until prompted again and decode
+        decoded = self._serial_port.read_until(b'>:').decode(errors='ignore')
+
+        # removing echo and prompt
+        decoded = decoded.split(f"{payload}\r\n", 1)[-1] if f"{payload}\r\n" in decoded else decoded.replace(f"{payload}\r", "", 1)
+        decoded = decoded.replace('>:', '').strip()
+
+        return decoded
+
+
     def write(self, msg):
         self._serial_port.write(msg)
     
