@@ -8,24 +8,43 @@ from .threaded import Threaded
 
 
 class Storage:
-    class Write(Threaded):
+    # class Write(Threaded):
+    #     def __init__(self, serial_wrapper) -> None:
+    #         self._serial_wrapper = serial_wrapper
+    #
+    #     def start(self, file: str) -> None:
+    #         def _run():
+    #             self._serial_wrapper.write(f"storage write {file}".encode())
+    #         self.exec(func=_run, timeout=None)
+    #
+    #     def send(self, text: str) -> None:
+    #         if self.thread.is_alive():
+    #             #replace carriage return with ctrl+Enter
+    #             self._serial_wrapper.write(text.replace('\r\n', '\x0d').encode())
+    #             time.sleep(0.5)
+    #
+    #     def file(self, text: str, path: str) -> None:
+    #         self.start(path)
+    #         self.send(text)
+    #         self.stop()
+
+    class Write:
         def __init__(self, serial_wrapper) -> None:
             self._serial_wrapper = serial_wrapper
 
         def start(self, file: str) -> None:
-            def _run():
-                self._serial_wrapper.send(f"storage write {file}")
-            self.exec(func=_run, timeout=None)
+            self._serial_wrapper.write(f"storage write {file}\r".encode())
 
         def send(self, text: str) -> None:
-            if self.thread.is_alive():
-                #replace carriage return with ctrl+Enter
-                self._serial_wrapper.write(text.replace('\r\n', '\x0d').encode())
-                time.sleep(0.5)
-        
+            self._serial_wrapper.write(text.replace('\r\n', '\x0d').encode())
+
+        def stop(self) -> None:
+            self._serial_wrapper.ctrl_c()
+
         def file(self, text: str, path: str) -> None:
             self.start(path)
             self.send(text)
+            time.sleep(0.5)
             self.stop()
 
     def __init__(self, serial_wrapper) -> None:
@@ -34,10 +53,10 @@ class Storage:
 
     def info(self, fs: str) -> dict:
         assert fs in ('/ext', '/int'), "Storage filesystem must be '/ext' or '/int'"
-        info_p = re.compile("(\w+):\s(.+)")
+        info_p = re.compile(r"(\w+):\s(.+)")
         response = self._serial_wrapper.send(f"storage info {fs}")
         info = info_p.findall(response)
-        size_p = re.compile("(\d+)KiB\s(\w+)")
+        size_p = re.compile(r"(\d+)KiB\s(\w+)")
         size = size_p.findall(response)
         return { info[0][0]: info[0][1].rstrip(), info[1][0]: info[1][1].rstrip(), size[0][1]+"_KB": int(size[0][0]), size[1][1]+"_KB": int(size[1][0])}
     
@@ -46,8 +65,8 @@ class Storage:
         pass
 
     def _explorer(self, cmd: str, path: str) -> dict:
-        dirs_p = re.compile("\[D\]\s(\w+)")
-        files_p = re.compile("\[F\]\s(.+)\s(\d+)(\w+)")
+        dirs_p = re.compile(r"\[D\]\s(\w+)")
+        files_p = re.compile(r"\[F\]\s(.+)\s(\d+)(\w+)")
         response = self._serial_wrapper.send(f"storage {cmd} {path}")
         dirs = dirs_p.findall(response)
         files = [{'name': file[0], 'size': int(file[1]), 'weight': file[2]} for file in files_p.findall(response)]
