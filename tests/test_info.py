@@ -26,13 +26,27 @@ class TestInfo(unittest.TestCase):
         if hasattr(self, "flipper") and self.flipper._serial_wrapper:
             self.flipper._serial_wrapper.ctrl_c()
 
-    def test_info(self):
-        info = self.flipper.device_info.info()
+    def test_device_info(self):
+        info = self.flipper.info.device_info()
+        print(info)
+
+        assert info is not None
+        assert info["model"] == "Flipper"
+
+
+    def test_power_info(self):
+        info = self.flipper.info.power_info()
         print(info)
 
         assert info is not None
         assert info["hardware_model"] == "Flipper"
 
+    def test_power_debug_info(self):
+        info = self.flipper.info.power_debug_info()
+        print(info)
+
+        assert info is not None
+        assert info["hardware_model"] == "Flipper"
 
 
 if __name__ == '__main__':
