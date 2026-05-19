@@ -42,13 +42,13 @@ class LocalSerial:
             pass
 
         # read until prompted again and decode
-        decoded = self._serial_port.read_until(b'>:').decode(errors='ignore')
+        raw_response = self._serial_port.read_until(b'>:').decode(errors='ignore')
 
         # removing echo and prompt
-        decoded = decoded.split(f"{payload}\r\n", 1)[-1] if f"{payload}\r\n" in decoded else decoded.replace(f"{payload}\r", "", 1)
-        decoded = decoded.replace('>:', '').strip()
+        raw_response = raw_response.split(f"{payload}\r\n", 1)[-1] if f"{payload}\r\n" in raw_response else raw_response.replace(f"{payload}\r", "", 1)
+        raw_response = raw_response.replace('>:', '').strip()
 
-        return decoded
+        return raw_response
 
 
     def write(self, msg):
