@@ -23,6 +23,7 @@ class Threaded:
                 self.thread = timer
 
     def stop(self) -> None:
-        if self.thread.is_alive():
+        thread = getattr(self, "thread", None)
+        if thread is not None and thread.is_alive():
             self._serial_wrapper.ctrl_c()
             self.thread = None

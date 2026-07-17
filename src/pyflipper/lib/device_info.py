@@ -5,7 +5,7 @@ class DeviceInfo:
         self._serial_wrapper = serial_wrapper
     
     def info(self) -> dict:
-        pattern = re.compile("([\w|_]+)\s+:\s([\w|\d]+)")
+        pattern = re.compile(r"([\w|_]+)\s+:\s([\w|\d]+)")
         value = {}
 
         for x in pattern.findall(self._serial_wrapper.send("device_info")):

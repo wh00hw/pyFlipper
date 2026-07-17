@@ -6,7 +6,7 @@ class Ps:
 
     def list(self) -> list:
         pattern = re.compile(
-            '(\w+)\s+(0[xX][0-9a-fA-F]+)\s+(\S+)\s+(\d+)\s+(\d+)')
+            r'(\w+)\s+(0[xX][0-9a-fA-F]+)\s+(\S+)\s+(\d+)\s+(\d+)')
         return [
             {'Name': line[0],
              'Stack start': line[1],

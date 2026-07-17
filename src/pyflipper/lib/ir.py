@@ -1,16 +1,30 @@
+import re
+
 from .threaded import Threaded
 from .utils import is_hexstring
 
 class Ir(Threaded):
-    # TODO: auto parse available protocols from >: ir help
-    PROTOCOLS = ["NEC", "NEC42", "NEC42ext", "Samsung32",
-                 "RC6", "RC5", "RC5X", "SIRC", "SIRC15", "SIRC20"]
+    # Fallback list used only if the protocols can't be read from `ir` help.
+    PROTOCOLS = ["NEC", "NECext", "NEC42", "NEC42ext", "Samsung32",
+                 "RC6", "RC5", "RC5X", "SIRC", "SIRC15", "SIRC20",
+                 "Kaseikyo", "RCA", "Pioneer"]
 
     def __init__(self, serial_wrapper) -> None:
         self._serial_wrapper = serial_wrapper
+        self._protocols = None
+
+    def protocols(self) -> list:
+        # Read the protocol list straight from the firmware's `ir` help output
+        # so it stays in sync with the installed firmware. Cached after first use.
+        if self._protocols is None:
+            help_text = self._serial_wrapper.send("ir")
+            match = re.search(r"Available protocols:\s*(.+)", help_text)
+            self._protocols = match.group(1).split() if match else list(self.PROTOCOLS)
+        return self._protocols
 
     def tx(self, protocol: str, hex_address: str, hex_command: str) -> None:
-        assert protocol in self.PROTOCOLS, f"Available protocols: {self.PROTOCOLS}"
+        available = self.protocols()
+        assert protocol in available, f"Available protocols: {available}"
         assert is_hexstring(hex_address), "hex_address must be hexstring"
         assert is_hexstring(hex_command), "hex_command must be hexstring"
         address = ' '.join(hex_address[i:i+2] for i in range(0, len(hex_address), 2)) if " " not in hex_address else hex_address

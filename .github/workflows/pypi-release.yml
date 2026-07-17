@@ -3,7 +3,7 @@ name: Publish Python package and GitHub Release
 on:
   push:
     tags:
-      - 'v0.21'
+      - 'v*'
 
 jobs:
   release:

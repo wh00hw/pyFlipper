@@ -1,6 +1,7 @@
 from .lib.bt import Bt
 from .lib.debug import Debug
 from .lib.device_info import DeviceInfo
+from .lib.info import Info
 from .lib.free import Free
 from .lib.i2c import I2c
 from .lib.ikey import Ikey
@@ -38,6 +39,7 @@ class PyFlipper:
         self.vibro = Vibro(serial_wrapper=self._serial_wrapper)
         self.date = Date(serial_wrapper=self._serial_wrapper)
         self.device_info = DeviceInfo(serial_wrapper=self._serial_wrapper)
+        self.info = Info(serial_wrapper=self._serial_wrapper)
         self.led = Led(serial_wrapper=self._serial_wrapper)
         self.bt = Bt(serial_wrapper=self._serial_wrapper)
         self.ps = Ps(serial_wrapper=self._serial_wrapper)
